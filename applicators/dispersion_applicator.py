@@ -3,7 +3,7 @@ from model.change_matrix import ChangeMatrix
 from model.model import Model
 
 
-class DispersionApplicator():
+class DispersionApplicator(IApplicator):
 
     def __init__(self, diagonal_dispersion_modifier, dispersion_constant):
         self.p = diagonal_dispersion_modifier

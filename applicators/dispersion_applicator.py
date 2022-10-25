@@ -14,9 +14,6 @@ def dispersion(x, y, x2, y2, oil_level, modified, modifier):
     if oil_level[x2, y2] - 4 * change > 0:
         modified[x, y] += change
         modified[x2, y2] -= change
-    else:
-        modified[x, y] += change / 4
-        modified[x2, y2] -= change / 4
     return modified
 
 
@@ -27,7 +24,7 @@ class DispersionApplicator(IApplicator):
         self.D = dispersion_constant
 
     def apply(self, model: Model, change_matrix: ChangeMatrix) -> ChangeMatrix:
-        oil_level = change_matrix.oil_level
+        oil_level = model.oil_level
         x_max = oil_level.shape[0]
         y_max = oil_level.shape[1]
 

@@ -25,8 +25,12 @@ class Cell:
 
     def _get_color_by_type(self) -> Color:
         if self.type == CellType.WATER:
-            return Color.blue
-        return Color.tea_green
+            return Color.water
+        if self.type == CellType.EARTH:
+            return Color.earth
+        if self.type == CellType.OIL_SOURCE:
+            return Color.oil
+        return Color.red
 
 
     def draw(self, window: Surface):

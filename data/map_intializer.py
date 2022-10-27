@@ -14,9 +14,9 @@ class MapInitializer:
     def get_cell_array(self, cell_size: int):
         (X, Y, Z) = np.shape(self.image)
         array = np.empty(shape=(X, Y), dtype=np.dtype(object))
-        for x in range(X):
-            for y in range(Y):
-                pixel_rgb = self.image[x, y]
+        for y in range(Y):
+            for x in range(X):
+                pixel_rgb = self.image[y,x]
                 c_type = 0
                 if np.array_equal(pixel_rgb, np.array(Color.water)):
                     c_type = CellType.WATER

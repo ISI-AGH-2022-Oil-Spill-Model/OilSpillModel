@@ -2,25 +2,26 @@ import numpy as np
 
 from data.image_loader import ImageLoader
 from model.cell import Cell,CellType
+from view.colors import Color
 
 class MapInitializer:
-    def __init__(self, path_to_img: str):
-        self.image = ImageLoader._get_image(path_to_img)
+    def __init__(self, path_to_img: str, image_loader: ImageLoader = ImageLoader()):
+        self.image = image_loader._get_image(path_to_img)
 
-    def getCellArray(self, cell_size: int):
+    def get_cell_array(self, cell_size: int):
         (X, Y) = np.shape(self.image)
-        array=np.zeros(shape=(X, Y))
+        array=np.empty(shape=(X, Y), dtype=np.dtype(object))
         for x in range(X):
             for y in range(Y):
-                (r, g, b) = self.image[x, y]
+                pixel_rgb = self.image[x, y]
                 c_type = 0
-                if b == 0:
+                if pixel_rgb == Color.water:
                     c_type = CellType.WATER
-                elif g == 0:
+                elif pixel_rgb == Color.earth:
                     c_type = CellType.EARTH
-                elif r == g == b == 0:
+                elif pixel_rgb == Color.oil:
                     c_type = CellType.OIL_SOURCE
                 else:
                     raise ("Image contains pixels in bad color!")
-                array[x, y] = Cell(type=c_type, cell_size=cell_size, row=x, col=y)
+                array[x, y] = Cell(c_type, cell_size, x, y)
         return array

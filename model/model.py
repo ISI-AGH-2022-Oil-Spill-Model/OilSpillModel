@@ -53,5 +53,5 @@ class Model:
                 pygame.draw.line(window, Color.dark_green, (col_idx * self.cell_size, 0), (col_idx * self.cell_size, width * self.cell_size))
 
     def fill_cells(self, map_init: MapInitializer):
-        self.cells = map_init.getCellArray(self.cell_size)
+        self.cells = map_init.get_cell_array(self.cell_size)
 

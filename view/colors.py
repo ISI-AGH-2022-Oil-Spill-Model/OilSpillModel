@@ -1,9 +1,8 @@
 class Color():
     """Colors palette of the programme."""
-    # TODO choosing nice colors for water, earth, water
-    # earth = ()
-    # water = ()
-    # oil_max = ()
+    earth = (0,255,0)
+    water = (0,0,255)
+    oil = (0,0,0)
     orange = (213,87,59)
     auburn = (136,80,86)
     violet = (119,125,167)

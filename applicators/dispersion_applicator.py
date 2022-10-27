@@ -1,48 +1,36 @@
-import numpy as np
-
 from applicators.i_applicator import IApplicator
-from model.change_matrix import ChangeMatrix
 from model.model import Model
-from model.cell import Cell
 from model.cell import CellType
 
 
 class DispersionApplicator(IApplicator):
 
-    def __init__(self, diagonal_dispersion_modifier, cross_dispersion_constant):
-        self.D = diagonal_dispersion_modifier
-        self.C = cross_dispersion_constant
+    def __init__(self, dispersion_modifier, diagonal_constant):
+        self.D = dispersion_modifier
+        self.d = diagonal_constant
+        self.eps = 1e-4
 
-    def apply(self, model: Model, change_matrix: ChangeMatrix):
+    def apply(self, model: Model):
 
-        for cells in model.cells:
-            for cell in cells:
-                if cell.type == CellType.EARTH:
+        for row in model.cells:
+            for cell in row:
+                if cell.type == CellType.EARTH or cell.oil_level <= self.eps:
                     continue
-                cross_cells = np.array([], dtype=np.dtype(object))
-                for neighbour in cell.neighbours[[1, 3, 5, 7]]:
-                    if neighbour is not None and neighbour.type != CellType.EARTH:
-                        cross_cells = np.append(cross_cells, neighbour)
+                change = cell.oil_level * self.D
 
-                diagonal_cells = np.array([], dtype=np.dtype(object))
-                for neighbour in cell.neighbours[[0, 2, 4, 6]]:
-                    if neighbour is not None and neighbour.type != CellType.EARTH:
-                        diagonal_cells = np.append(diagonal_cells, neighbour)
+                for i, neighbour in enumerate(cell.neighbours):
+                    if neighbour == None:
+                        continue
+                    if neighbour.type == CellType.EARTH:
+                        continue
+                    if neighbour.oil_level > cell.oil_level:
+                        continue
 
-                c_change = cell.oil_level * self.C / 4
-                c_count = len(cross_cells)
-                d_change = cell.oil_level * self.D / 4
-                d_count = len(diagonal_cells)
+                    is_diagonal = i % 2 == 0
+                    if is_diagonal:
+                        cell.oil_change -= change * self.d
+                        neighbour.oil_change += change * self.d
+                    else:
+                        cell.oil_change -= change 
+                        neighbour.oil_change += change
 
-                # If change is too high decrease it
-                while c_change + d_change > cell.oil_level:
-                    c_change *= 0.5
-                    d_change *= 0.5
-
-                cell.oil_change -= c_change * c_count + d_change * d_count
-
-                for neighbour in cross_cells:
-                    neighbour.oil_change += c_change
-
-                for neighbour in diagonal_cells:
-                    neighbour.oil_change += d_change

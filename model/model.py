@@ -5,6 +5,7 @@ from model.cell import Cell, CellType
 
 from model.change_matrix import ChangeMatrix
 from view.colors import Color
+from data.map_intializer import MapInitializer
 
 
 class Model:
@@ -50,5 +51,7 @@ class Model:
             pygame.draw.line(window, Color.dark_green, (0, row_idx * self.cell_size), (height * self.cell_size, row_idx * self.cell_size))
             for col_idx in range(width):
                 pygame.draw.line(window, Color.dark_green, (col_idx * self.cell_size, 0), (col_idx * self.cell_size, width * self.cell_size))
-    
+
+    def fill_cells(self, map_init: MapInitializer):
+        self.cells = map_init.getCellArray(self.cell_size)
 

@@ -15,11 +15,11 @@ class MapInitializer:
             for y in range(Y):
                 pixel_rgb = self.image[x, y]
                 c_type = 0
-                if pixel_rgb == Color.water:
+                if np.array_equal(pixel_rgb, np.array(Color.water)):
                     c_type = CellType.WATER
-                elif pixel_rgb == Color.earth:
+                elif np.array_equal(pixel_rgb, np.array(Color.earth)):
                     c_type = CellType.EARTH
-                elif pixel_rgb == Color.oil:
+                elif np.array_equal(pixel_rgb, np.array(Color.oil)):
                     c_type = CellType.OIL_SOURCE
                 else:
                     raise ("Image contains pixels in bad color!")

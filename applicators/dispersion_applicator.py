@@ -3,85 +3,43 @@ import numpy as np
 from applicators.i_applicator import IApplicator
 from model.change_matrix import ChangeMatrix
 from model.model import Model
-
-
-def dispersion(x, y, x2, y2, oil_level, modified, modifier):
-    change = oil_level[x2, y2] * modifier
-
-    # condition which prevents from creating negative values in cells in case of
-    # too big dispersion constants or oil layer being too thin
-
-    if oil_level[x2, y2] - 4 * change > 0:
-        modified[x, y] += change
-        modified[x2, y2] -= change
-    return modified
-
-
+from model.cell import Cell
 
 
 class DispersionApplicator(IApplicator):
 
-    def __init__(self, diagonal_dispersion_modifier, dispersion_constant):
+    def __init__(self, diagonal_dispersion_modifier, cross_dispersion_constant):
         self.D = diagonal_dispersion_modifier
-        self.P = dispersion_constant
+        self.C = cross_dispersion_constant
 
-    def apply(self, model: Model, change_matrix: ChangeMatrix) -> ChangeMatrix:
-        oil_level = model.oil_level
-        x_max = oil_level.shape[0]
-        y_max = oil_level.shape[1]
+    def apply(self, model: Model, change_matrix: ChangeMatrix):
+        oil_cells = model.cells
 
-        self.disperse_outwards(1, 0, oil_level, oil_level)
+        for cell in oil_cells:
+            cross_cells = np.array([], dtype=np.dtype(object))
+            for neighbour in cell.neighbours[[1, 3, 5, 7]]:
+                if neighbour is not None and neighbour.oil_level < cell.oil_level:
+                    cross_cells = np.append(cross_cells, neighbour)
 
-        changes = np.zeros(oil_level.shape)
-        for x in range(x_max):
-            for y in range(y_max):
+            diagonal_cells = np.array([], dtype=np.dtype(object))
+            for neighbour in cell.neighbours[[0, 2, 4, 6]]:
+                if neighbour is not None and neighbour.oil_level < cell.oil_level:
+                    diagonal_cells = np.append(diagonal_cells, neighbour)
 
-                self.disperse_outwards(x, y, oil_level, changes)
+            c_change = cell.oil_level * self.C
+            c_count = len(cross_cells)
+            d_change = cell.oil_level * self.D
+            d_count = len(diagonal_cells)
 
-        change_matrix.oil_level = changes
-        return change_matrix
+            # If change is too high decrease it
+            while c_change + d_change > cell.oil_level:
+                c_change *= 0.5
+                d_change *= 0.5
 
-    def disperse_outwards(self, x, y, oil_level, modified_oil_level) -> np.array:
-        oil = oil_level[x, y]
-        max_x = oil_level.shape[0] - 1
-        max_y = oil_level.shape[1] - 1
+            cell.oil_change -= c_change + d_change
 
-        neighbours = np.empty(shape=(0, 2), dtype=np.int16)
-        if x > 0 and oil_level[x - 1, y] < oil:
-            neighbours = np.append(neighbours, [[x - 1, y]], axis=0)
-        if y < max_y and oil_level[x, y + 1] < oil:
-            neighbours = np.append(neighbours, [[x, y + 1]], axis=0)
-        if x < max_x and oil_level[x + 1, y] < oil:
-            neighbours = np.append(neighbours, [[x + 1, y]], axis=0)
-        if y > 0 and oil_level[x, y - 1] < oil:
-            neighbours = np.append(neighbours, [[x, y - 1]], axis=0)
+            for neighbour in cross_cells:
+                neighbour.oil_change += c_change / c_count
 
-        diagonals = np.empty(shape=(0, 2), dtype=np.int16)
-        if x > 0 and y > 0 and oil_level[x - 1, y - 1] < oil:
-            diagonals = np.append(diagonals, [[x - 1, y - 1]], axis=0)
-        if x > 0 and y < max_y and oil_level[x - 1, y + 1] < oil:
-            diagonals = np.append(diagonals, [[x - 1, y + 1]], axis=0)
-        if x < max_x and y < max_y and oil_level[x + 1, y + 1] < oil:
-            diagonals = np.append(diagonals, [[x + 1, y + 1]], axis=0)
-        if x < max_x and y > 0 and oil_level[x + 1, y - 1] < oil:
-            diagonals = np.append(diagonals, [[x + 1, y - 1]], axis=0)
-
-        n_amount = len(neighbours)
-        n_change = oil_level[x, y] * self.P
-        d_amount = len(diagonals)
-        d_change = oil_level[x, y] * self.D
-
-        while n_change * n_amount + d_change * d_amount > oil_level[x, y]:
-            if n_amount != 0:
-                n_change /= n_amount
-            if d_amount != 0:
-                d_change /= d_amount
-
-        modified_oil_level[x, y] -= (n_change + d_change)
-
-        for n in neighbours:
-            modified_oil_level[n[0], n[1]] += n_change / n_amount
-
-        for d in diagonals:
-            modified_oil_level[d[0], d[1]] += d_change / d_amount
-
+            for neighbour in diagonal_cells:
+                neighbour.oil_change += d_change / d_count

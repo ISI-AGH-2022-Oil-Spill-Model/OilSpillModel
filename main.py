@@ -12,6 +12,7 @@ def get_applicators():
 
 def main():
     shape = (100, 100)
+    image_name = "1231" # TODO
     model = Model(shape, 10)
     model.init_surface("ocean")
     iterations = 25

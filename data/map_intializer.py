@@ -8,9 +8,12 @@ class MapInitializer:
     def __init__(self, path_to_img: str, image_loader: ImageLoader = ImageLoader()):
         self.image = image_loader._get_image(path_to_img)
 
+    def get_image_size(self):
+        return np.shape(self.image)[:2]
+
     def get_cell_array(self, cell_size: int):
-        (X, Y) = np.shape(self.image)
-        array=np.empty(shape=(X, Y), dtype=np.dtype(object))
+        (X, Y, Z) = np.shape(self.image)
+        array = np.empty(shape=(X, Y), dtype=np.dtype(object))
         for x in range(X):
             for y in range(Y):
                 pixel_rgb = self.image[x, y]

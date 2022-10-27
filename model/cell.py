@@ -15,6 +15,7 @@ class CellType(Enum):
 class Cell:
     def __init__(self, type: CellType, cell_size: int, row: int, col: int) -> None:
         self.oil_level = 0
+        self.oil_change = 0
         self.type = type
         self.row = row
         self.col = col

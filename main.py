@@ -1,6 +1,5 @@
 from applicators.dispersion_applicator import DispersionApplicator
 from controller.controller import Controller
-from model.change_matrix import ChangeMatrix
 from model.model import Model
 from data.map_intializer import MapInitializer
 
@@ -16,7 +15,6 @@ def main():
     map_init = MapInitializer("\images\\" + image_name)
     model = Model(map_init.get_image_size(), 1)
     model.fill_cells(map_init)
-    model.init_surface("ocean")
     iterations = 25
     controller = Controller()
     controller.run_simulation(iterations, model, get_applicators())

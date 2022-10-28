@@ -16,21 +16,22 @@ class DispersionApplicator(IApplicator):
             for cell in row:
                 if cell.type == CellType.EARTH or cell.oil_level <= self.eps:
                     continue
-                change = cell.oil_level * self.D
 
                 for i, neighbour in enumerate(cell.neighbours):
-                    if neighbour == None:
-                        continue
                     if neighbour.type == CellType.EARTH:
                         continue
-                    if neighbour.oil_level > cell.oil_level:
-                        continue
 
-                    is_diagonal = i % 2 == 0
-                    if is_diagonal:
-                        cell.oil_change -= change * self.d
-                        neighbour.oil_change += change * self.d
-                    else:
-                        cell.oil_change -= change 
+                    next_tile_oil_level = 0
+                    if neighbour != None:
+                        if neighbour.oil_level > cell.oil_level:
+                            continue
+                        next_tile_oil_level = neighbour.oil_level
+                        
+                    change = (cell.oil_level - next_tile_oil_level) * self.D
+
+                    if i % 2 == 0:
+                        change *= self.d
+
+                    cell.oil_change -= change
+                    if neighbour != None:
                         neighbour.oil_change += change
-

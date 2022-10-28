@@ -5,16 +5,19 @@ from model.cell import CellType
 
 class OilLeakApplicator(IApplicator):
 
-    def __init__(self, leak_rate):
+    def __init__(self, leak_rate: float, once: bool):
         self.leak_rate = leak_rate
+        self.once = once
+        self.applied = False
 
     def apply(self, model: Model):
 
-         for row in model.cells:
+        if self.once and self.applied:
+            return
+        for row in model.cells:
             for cell in row:
                 if cell.type == CellType.OIL_SOURCE:
                     cell.oil_change += self.leak_rate
-                    print(cell.oil_level)
-
+                    self.applied = True
             
                         

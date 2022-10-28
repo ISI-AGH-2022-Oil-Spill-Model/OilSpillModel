@@ -32,7 +32,6 @@ class Cell:
             return Color.oil
         return Color.red
 
-
     def draw(self, window: Surface):
         self.visual.draw(window)
 
@@ -43,13 +42,10 @@ class Cell:
     def update_color_by_oil_level(self):
         if self.type != CellType.WATER:
             return
-        if self.oil_level > 100:
-            self.update_color(Color.water_oil_extreme)
+        if self.oil_level < 0.1:
             return
-        self.update_color((0, 0, 255 - int(np.ceil(self.oil_level * 2))))
+        self.update_color((0, 0, max(0, 240 - int(np.ceil(self.oil_level * 4)))))
             
-            
-
     def update_color(self, new_color: Color):
         self.visual.color = new_color 
 

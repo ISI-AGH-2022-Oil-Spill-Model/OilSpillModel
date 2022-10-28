@@ -9,9 +9,9 @@ class Controller:
     def __init__(self, animator: Animator = Animator()):
         self.animator = animator
 
-    def run_simulation(self, iterations: int, model: Model, applicators: list[IApplicator]):
+    def run_simulation(self, iterations: int, model: Model, applicators: list[IApplicator], fps):
         window_size = tuple(model.cell_size * x for x in model.shape)
-        self.animator.initialize_animation(window_size, 60)
+        self.animator.initialize_animation(window_size, fps)
 
         for i in range(iterations):
             print("Iteration: ", i)

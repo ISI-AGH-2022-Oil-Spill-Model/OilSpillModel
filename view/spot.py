@@ -11,7 +11,7 @@ class Spot:
         self.size = size
         self.x = row * size
         self.y = col * size
-        self.color = Color.tea_green
+        self.color = Color.water
     
     def get_pos(self):
         """Returns idx of row and column of the object."""

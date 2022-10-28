@@ -32,10 +32,20 @@ class Cell:
             return Color.oil
         return Color.red
 
-
     def draw(self, window: Surface):
         self.visual.draw(window)
 
+    def merge_change(self):
+        self.oil_level += self.oil_change
+        self.oil_change = 0
+
+    def update_color_by_oil_level(self):
+        if self.type != CellType.WATER:
+            return
+        if self.oil_level < 0.1:
+            return
+        self.update_color((0, 0, max(0, 240 - int(np.ceil(self.oil_level * 4)))))
+            
     def update_color(self, new_color: Color):
         self.visual.color = new_color 
 

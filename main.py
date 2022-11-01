@@ -15,10 +15,10 @@ def get_applicators():
 
 def main():
     # image_name = "gulfOfMexicoMap.png"
-    image_name = "gulfOfMexicoMap100.png"
+    image_name = "map800x400.png"
 
     map_init = MapInitializer("\images\\" + image_name)
-    model = Model(map_init.get_image_size(), 10)
+    model = Model(map_init.get_image_size(), 1)
     model.fill_cells(map_init)
     # model = Model((100,100), 10)
     # model.init_surface("ocean")

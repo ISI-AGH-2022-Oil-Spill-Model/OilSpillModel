@@ -15,15 +15,14 @@ class MapInitializer:
     def get_cell_array(self, cell_size: int):
         (X, Y, Z) = np.shape(self.image)
         array = np.empty(shape=(X, Y), dtype=np.dtype(object))
-        for x in range(X):
-            for y in range(Y):
-                pixel_rgb = self.image[x,y]
+        for x, row in enumerate(self.image):
+            for y, pixel in enumerate(row):
                 c_type = 0
-                if np.array_equal(pixel_rgb, np.array(Color.water)):
+                if np.array_equal(pixel, np.array(Color.water)):
                     c_type = CellType.WATER
-                elif np.array_equal(pixel_rgb, np.array(Color.earth)):
+                elif np.array_equal(pixel, np.array(Color.earth)):
                     c_type = CellType.EARTH
-                elif np.array_equal(pixel_rgb, np.array(Color.oil)):
+                elif np.array_equal(pixel, np.array(Color.oil)):
                     c_type = CellType.OIL_SOURCE
                 else:
                     raise Exception("Image contains pixels in bad color!")

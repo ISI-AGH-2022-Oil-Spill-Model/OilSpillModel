@@ -2,8 +2,6 @@ import numpy as np
 
 from data.image_loader import ImageLoader
 from data.colors_representation import ColorsRepresentation
-from model.cell import Cell,CellType
-from view.colors import Color
 
 class CurrentMapInitializer:
     def __init__(self, path_to_direct_img: str, path_to_velocity_img: str, image_loader: ImageLoader = ImageLoader()):
@@ -28,12 +26,7 @@ class CurrentMapInitializer:
                                     f'Position: {x}, {y}')
                 else:
                     array_d[x, y] = ColorsRepresentation.direction_dict.get(tuple(self.direct_img[x, y]))
-
-        for x, row in enumerate(self.velocity_img):
-            for y, pixel in enumerate(row):
-                if ColorsRepresentation.current_vel_dict.get(self.velocity_img[x, y]) is None:
-                    raise Exception(f'Image contains pixels in bad color: {self.velocity_img[x, y]}, '
-                                    f'Position: {x}, {y}')
-                else:
-                    array_v[x, y] = ColorsRepresentation.current_vel_dict.get(self.velocity_img[x, y])
+        array_v = self.velocity_img
+        array_v = np.array(array_v/255*2.275, dtype="float64")
+        print(np.unique(array_v))
         return array_d, array_v

@@ -12,13 +12,3 @@ class ColorsRepresentation:
         Color.W: [0, -1],
         Color.NW: [1, -1]
     }
-    current_vel_dict = {
-        Color.v0: 0,
-        Color.v35: 9,
-        Color.v70: 18,
-        Color.v105: 27,
-        Color.v140: 45,
-        Color.v175: 63,
-        Color.v210: 81,
-        Color.v245: 100
-    }

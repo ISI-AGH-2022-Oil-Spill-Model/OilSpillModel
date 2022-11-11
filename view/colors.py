@@ -19,12 +19,3 @@ class Color():
     W = (0, 255, 255)
     NW = (255, 255, 255)
 
-    # Colors describing velocity of sea currents
-    v0 = 0
-    v35 = 35
-    v70 = 70
-    v105 = 105
-    v140 = 140
-    v175 = 175
-    v210 = 210
-    v245 = 245

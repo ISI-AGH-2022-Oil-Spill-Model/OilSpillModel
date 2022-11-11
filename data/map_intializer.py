@@ -6,8 +6,7 @@ from view.colors import Color
 
 class MapInitializer:
     def __init__(self, path_to_img: str, image_loader: ImageLoader = ImageLoader()):
-        self.image = image_loader._get_image(path_to_img)
-        self.image = self.image.transpose(1,0,2)
+        self.image = image_loader._get_image(path_to_img, True)
 
     def get_image_size(self):
         return np.shape(self.image)[:2]

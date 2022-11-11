@@ -28,5 +28,4 @@ class CurrentMapInitializer:
                     array_d[x, y] = ColorsRepresentation.direction_dict.get(tuple(self.direct_img[x, y]))
         array_v = self.velocity_img
         array_v = np.array(array_v/255*2.275, dtype="float64")
-        print(np.unique(array_v))
         return array_d, array_v

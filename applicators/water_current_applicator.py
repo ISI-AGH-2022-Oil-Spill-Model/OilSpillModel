@@ -18,7 +18,7 @@ class WaterCurrentApplicator(IApplicator):
 
                 if cell.current_direction != -1:
                     neighbour = cell.neighbours[cell.current_direction]
-                    if neighbour.type == CellType.EARTH:
+                    if neighbour is None or neighbour.type == CellType.EARTH:
                         continue
 
                     change = self.speed_modifier * cell.current_speed * cell.oil_level

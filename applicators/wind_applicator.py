@@ -3,7 +3,7 @@ from model.model import MIN_OIL_LEVEL, Model
 from model.cell import CellType
 
 
-class WaterCurrentApplicator(IApplicator):
+class WindApplicator(IApplicator):
 
     factors = [0.15, .7, 0.15]
 
@@ -18,12 +18,12 @@ class WaterCurrentApplicator(IApplicator):
 
                 change_sum = 0
 
-                for i, direction in enumerate(cell.current_directions):
+                for i, direction in enumerate(cell.wind_directions):
                     neighbour = cell.neighbours[direction]
                     if neighbour is None or neighbour.type == CellType.EARTH:
                         continue
 
-                    change = self.speed_modifier * cell.current_speed * cell.oil_level * WaterCurrentApplicator.factors[i]
+                    change = self.speed_modifier * cell.wind_speed * cell.oil_level * WindApplicator.factors[i]
                     change_sum += change
                     neighbour.oil_level += change
 

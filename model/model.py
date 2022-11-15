@@ -74,7 +74,7 @@ class Model:
                 cell.update_current_direction(neighbour)
                 cell.update_current_speed(speed[i][j])
 
-    def _update_neighbours(self):
+    def __update_neighbours(self):
         for row in self.cells:
             for cell in row:
                 cell.update_neighbours(self.cells)

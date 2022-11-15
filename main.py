@@ -18,12 +18,12 @@ def main():
     image_name = "map800x400.png"
 
     map_init = MapInitializer("\images\\" + image_name)
-    model = Model(map_init.get_image_size(), 1)
+    model = Model(map_init.get_image_size(), 2)
     model.fill_cells(map_init)
     # model = Model((100,100), 10)
     # model.init_surface("ocean")
-    iterations = 1000
-    fps = 10
+    iterations = 100
+    fps = 1000
     controller = Controller()
     controller.run_simulation(iterations, model, get_applicators(), fps)
 

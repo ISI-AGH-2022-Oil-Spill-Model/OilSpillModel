@@ -1,5 +1,5 @@
 from applicators.i_applicator import IApplicator
-from model.model import Model
+from model.model import MIN_OIL_LEVEL, Model
 from model.cell import CellType
 
 
@@ -8,15 +8,14 @@ class DispersionApplicator(IApplicator):
     def __init__(self, dispersion_modifier, diagonal_constant):
         self.D = dispersion_modifier
         self.d = diagonal_constant
-        self.eps = 1e-4
 
     def apply(self, model: Model):
 
-        for row in model.cells:
+        for row in model.active_cells():
             for cell in row:
-                if cell.type == CellType.EARTH or cell.oil_level <= self.eps:
+                if cell.type == CellType.EARTH or cell.oil_level <= MIN_OIL_LEVEL:
                     continue
-
+                
                 for i, neighbour in enumerate(cell.neighbours):
                     if neighbour.type == CellType.EARTH:
                         continue

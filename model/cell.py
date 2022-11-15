@@ -22,6 +22,8 @@ class Cell:
         self.visual = Spot(row, col, cell_size)
         self.neighbours = np.empty(8, dtype=np.dtype(object)) # NW, N, NE ,E, SE, S ,SW ,W  - can be None
         self.update_color(self._get_color_by_type())
+        self.current_direction = 0
+        self.current_speed = 0
 
     def _get_color_by_type(self) -> Color:
         if self.type == CellType.WATER:
@@ -48,6 +50,12 @@ class Cell:
             
     def update_color(self, new_color: Color):
         self.visual.color = new_color 
+
+    def update_current_direction(self, direction: int):
+        self.current_direction = direction
+
+    def update_current_speed(self, speed: int):
+        self.current_speed = speed
 
     def update_neighbours(self, grid: np.ndarray):
         """Updates neighbours list with all spot's neighbours."""

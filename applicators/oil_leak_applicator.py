@@ -14,7 +14,7 @@ class OilLeakApplicator(IApplicator):
 
         if self.once and self.applied:
             return
-        for row in model.cells:
+        for row in model.active_cells():
             for cell in row:
                 if cell.type == CellType.OIL_SOURCE:
                     cell.oil_change += self.leak_rate

@@ -34,8 +34,6 @@ def main():
     
     model.update_current(current_direction, current_speed)
     model.update_wind(wind_direction, wind_speed)
-    print(wind_direction)
-    print(wind_speed)
     iterations = 1000
     fps = 1000
 

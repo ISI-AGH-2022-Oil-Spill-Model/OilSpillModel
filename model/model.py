@@ -50,38 +50,14 @@ class Model:
     def update_current(self, directions, speed):
         for i, row in enumerate(self.cells):
             for j, cell in enumerate(row):
-                direction = directions[i][j]
-                neighbours = self._get_neighbours(direction)
-                cell.update_current_direction(neighbours)
+                cell.update_current_direction(directions[i][j])
                 cell.update_current_speed(speed[i][j])
 
     def update_wind(self, directions, speed):
         for i, row in enumerate(self.cells):
             for j, cell in enumerate(row):
-                direction = directions[i][j]
-                neighbours = self._get_neighbours(direction)
-                cell.update_wind_direction(neighbours)
+                cell.update_wind_direction(directions[i][j])
                 cell.update_wind_speed(speed[i][j])
-
-    def _get_neighbours(self, direction) -> list[int]:
-        neighbours = []
-        if direction[0] == 1 and direction[1] == -1:
-            neighbours = [7, 0, 1]
-        elif direction[0] == 1 and direction[1] == 0:
-            neighbours = [0, 1, 2]
-        elif direction[0] == 1 and direction[1] == 1:
-            neighbours = [1, 2, 3]
-        elif direction[0] == 0 and direction[1] == 1:
-            neighbours = [2, 3, 4]
-        elif direction[0] == -1 and direction[1] == 1:
-            neighbours = [3, 4, 5]
-        elif direction[0] == -1 and direction[1] == 0:
-            neighbours = [4, 5, 6]
-        elif direction[0] == -1 and direction[1] == -1:
-            neighbours = [5, 6, 7]
-        elif direction[0] == 0 and direction[1] == -1:
-            neighbours = [6, 7, 0]
-        return neighbours
 
     def __update_neighbours(self):
         for row in self.cells:

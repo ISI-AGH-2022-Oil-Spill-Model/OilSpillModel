@@ -69,8 +69,6 @@ class Cell:
         match direction:
             case [1, -1]:
                 return [7, 0, 1]
-            case [1, -1]:
-                return [7, 0, 1]
             case [1, 0]:
                 return [0, 1, 2]
             case [1, 1]:

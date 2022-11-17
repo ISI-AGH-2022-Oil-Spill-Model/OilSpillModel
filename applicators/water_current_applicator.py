@@ -1,5 +1,6 @@
 from applicators.i_applicator import IApplicator
-from model.model import MIN_OIL_LEVEL, Model
+from model.model import Model
+from model.model_constants import MIN_OIL_LEVEL
 from model.cell import CellType
 
 

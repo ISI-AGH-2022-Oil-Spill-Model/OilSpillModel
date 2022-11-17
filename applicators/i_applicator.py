@@ -1,7 +1,7 @@
-from model.model import Model
+from model.cell import Cell
 
 
 class IApplicator:
 
-    def apply(self, model: Model):
+    def apply(self, cell: Cell):
         raise NotImplementedError

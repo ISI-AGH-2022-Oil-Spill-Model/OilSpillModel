@@ -1,3 +1,4 @@
+from applicators.bulk_applicator import BulkApplicator
 from applicators.i_applicator import IApplicator
 from model.model import Model
 from view.animator import Animator
@@ -12,10 +13,10 @@ class Controller:
     def __init__(self, animator: Animator = Animator(), model: Model = None):
         self.animator = animator
         self.model = model
-        self.applicators = []
+        self.bulk_applicator = None
 
     def setup(self, applicators: list[IApplicator], map_name, current_direction_image, current_speed_image, wind_direction_image, wind_speed_image, pixel_size):
-        self.applicators = applicators
+        self.bulk_applicator = BulkApplicator(applicators)
         map_init = MapInitializer(map_name)
         self.model = Model(map_init.get_image_size(), pixel_size)
         window_size = tuple(self.model.cell_size * x for x in self.model.shape)
@@ -34,9 +35,7 @@ class Controller:
         for i in range(iterations):
             print("Iteration: ", i)
 
-            for applicator in self.applicators:
-                applicator.apply(self.model)
-
+            self.bulk_applicator.bulk_apply(self.model)
             self.model.apply_change()
             self.animator.update(self.model, fps)
 

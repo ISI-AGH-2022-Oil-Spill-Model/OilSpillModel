@@ -4,16 +4,18 @@ from model.cell import Cell, CellType
 
 class OilLeakApplicator(IApplicator):
 
-    def __init__(self, leak_rate: float, once: bool):
+    def __init__(self, leak_rate: float, max_leaks_from_all_sources: int):
         self.leak_rate = leak_rate
-        self.once = once
-        self.applied = False
+        self.max_iters = max_leaks_from_all_sources
+        self.iters = 0
 
     def apply(self, cell: Cell):
 
-        if self.once and self.applied:
+        if self.max_iters <= self.iters:
+            cell.type = CellType.WATER
             return
         if cell.type == CellType.OIL_SOURCE:
             cell.oil_change += self.leak_rate
-            self.applied = True
+            self.iters += 1
+        
             

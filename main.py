@@ -1,5 +1,6 @@
 from applicators.dispersion_applicator import DispersionApplicator
 from applicators.oil_leak_applicator import OilLeakApplicator
+from applicators.vapor_photo_applicator import VaporPhotoApplicator
 from applicators.water_current_applicator import WaterCurrentApplicator
 from applicators.wind_applicator import WindApplicator
 from controller.controller import Controller
@@ -8,11 +9,12 @@ import os
 
 # create new applicators here
 def get_applicators():
-    leaks = OilLeakApplicator(1000, False)
-    dispersion = DispersionApplicator(0.2, 0.7)
+    leaks = OilLeakApplicator(5000, 200)
+    dispersion = DispersionApplicator(0.15, 0.7)
     water_current = WaterCurrentApplicator(0.5)
-    wind = WindApplicator(0.1)
-    return [leaks, water_current, wind, dispersion]
+    wind = WindApplicator(0.2)
+    vapor_photo = VaporPhotoApplicator(0.001, 0.001)
+    return [leaks, water_current, wind, dispersion, vapor_photo]
 
 
 def main():

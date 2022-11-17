@@ -17,7 +17,7 @@ class DispersionApplicator(IApplicator):
                     continue
                 
                 for i, neighbour in enumerate(cell.neighbours):
-                    if neighbour.type == CellType.EARTH:
+                    if neighbour is None or neighbour.type == CellType.EARTH:
                         continue
 
                     next_tile_oil_level = 0

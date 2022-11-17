@@ -17,13 +17,15 @@ class MapInitializer:
         for x, row in enumerate(self.image):
             for y, pixel in enumerate(row):
                 c_type = 0
-                if np.array_equal(pixel, np.array(Color.water)):
-                    c_type = CellType.WATER
-                elif np.array_equal(pixel, np.array(Color.earth)):
-                    c_type = CellType.EARTH
-                elif np.array_equal(pixel, np.array(Color.oil)):
-                    c_type = CellType.OIL_SOURCE
-                else:
-                    raise Exception("Image contains pixels in bad color!")
+                pixel_list = tuple(pixel)
+                match pixel_list:
+                    case Color.water:
+                        c_type = CellType.WATER
+                    case Color.earth:
+                        c_type = CellType.EARTH
+                    case Color.oil:
+                        c_type = CellType.OIL_SOURCE
+                    case _:
+                        raise Exception("Image contains pixels in bad color!")
                 array[x, y] = Cell(c_type, cell_size, x, y)
         return array

@@ -3,8 +3,8 @@ import numpy as np
 from model.cell import Cell, CellType
 
 from data.map_intializer import MapInitializer
+from model.model_constants import MIN_OIL_LEVEL
 
-MIN_OIL_LEVEL = 1e-3
 
 
 class Model:
@@ -22,15 +22,22 @@ class Model:
                                   self.__active_cells_border[1]: self.__active_cells_border[3] + 1]
         return self.__active_cells
 
+    def get_active_cells_with_border(self, border: int):
+        top = max(0, self.__active_cells_border[0] - border)
+        left = max(0, self.__active_cells_border[1] - border)
+        bottom = min(self.shape[0] - 1, self.__active_cells_border[2] + 1 + border)
+        right = min(self.shape[1] - 1, self.__active_cells_border[3] + 1 + border)
+        return self.cells[top: bottom, left: right]
+
     def apply_change(self):
         self.__active_cells = None
-        for y, row in enumerate(self.cells):
+        for y, row in enumerate(self.get_active_cells_with_border(3)):
             for x, cell in enumerate(row):
-                if cell.type == CellType.EARTH or cell.oil_change == 0:
-                    continue
-                cell.merge_change()
-                cell.update_color_by_oil_level()
-                self.__update_active_cells_border(cell, y, x)
+                if cell.oil_change != 0:
+                    cell.merge_change()
+                    cell.update_color_by_oil_level()
+                    self.__update_active_cells_border(cell, y, x)
+                
 
     def init_surface(self, kind: str):
         if kind == "ocean":

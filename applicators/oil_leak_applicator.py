@@ -1,6 +1,5 @@
 from applicators.i_applicator import IApplicator
-from model.model import Model
-from model.cell import CellType
+from model.cell import Cell, CellType
 
 
 class OilLeakApplicator(IApplicator):
@@ -10,14 +9,11 @@ class OilLeakApplicator(IApplicator):
         self.once = once
         self.applied = False
 
-    def apply(self, model: Model):
+    def apply(self, cell: Cell):
 
         if self.once and self.applied:
             return
-        for row in model.active_cells():
-            for cell in row:
-                if cell.type == CellType.OIL_SOURCE:
-                    cell.oil_change += self.leak_rate
-                    self.applied = True
+        if cell.type == CellType.OIL_SOURCE:
+            cell.oil_change += self.leak_rate
+            self.applied = True
             
-                        

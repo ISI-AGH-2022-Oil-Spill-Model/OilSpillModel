@@ -1,6 +1,6 @@
 from applicators.i_applicator import IApplicator
-from model.model import MIN_OIL_LEVEL, Model
-from model.cell import CellType
+from model.model_constants import MIN_OIL_LEVEL
+from model.cell import Cell, CellType
 
 
 class DispersionApplicator(IApplicator):
@@ -9,28 +9,17 @@ class DispersionApplicator(IApplicator):
         self.D = dispersion_modifier
         self.d = diagonal_constant
 
-    def apply(self, model: Model):
+    def apply(self, cell: Cell):
+        for i, neighbour in enumerate(cell.neighbours):
+            if neighbour is None or neighbour.type == CellType.EARTH:
+                continue
+            if neighbour.oil_level > cell.oil_level:
+                continue
 
-        for row in model.active_cells():
-            for cell in row:
-                if cell.type == CellType.EARTH or cell.oil_level <= MIN_OIL_LEVEL:
-                    continue
-                
-                for i, neighbour in enumerate(cell.neighbours):
-                    if neighbour is None or neighbour.type == CellType.EARTH:
-                        continue
+            change = (cell.oil_level - neighbour.oil_level) * self.D
 
-                    next_tile_oil_level = 0
-                    if neighbour != None:
-                        if neighbour.oil_level > cell.oil_level:
-                            continue
-                        next_tile_oil_level = neighbour.oil_level
-                        
-                    change = (cell.oil_level - next_tile_oil_level) * self.D
+            if i % 2 == 0:
+                change *= self.d
 
-                    if i % 2 == 0:
-                        change *= self.d
-
-                    cell.oil_change -= change
-                    if neighbour != None:
-                        neighbour.oil_change += change
+            cell.oil_change -= change
+            neighbour.oil_change += change

@@ -2,6 +2,7 @@ from enum import Enum
 import numpy as np
 
 from pygame import Surface
+from model.model_constants import MIN_OIL_LEVEL
 from view.colors import Color
 
 from view.spot import Spot
@@ -44,11 +45,9 @@ class Cell:
         self.oil_change = 0
 
     def update_color_by_oil_level(self):
-        if self.type != CellType.WATER:
+        if self.type != CellType.WATER or self.oil_level < MIN_OIL_LEVEL:
             return
-        if self.oil_level < 0.1:
-            return
-        self.update_color((0, 0, max(0, 240 - int(np.ceil(self.oil_level * 4)))))
+        self.update_color((0, 0, max(0, 255 - int(np.ceil(self.oil_level * 2)))))
             
     def update_color(self, new_color: Color):
         self.visual.color = new_color 
@@ -66,24 +65,26 @@ class Cell:
         self.wind_speed = speed
 
     def _get_affected_neighbours(self, direction) -> list[int]:
-        neighbours = []
-        if np.array_equal(direction, [1, -1]):
-            neighbours = [7, 0, 1]
-        elif np.array_equal(direction, [1, 0]):
-            neighbours = [0, 1, 2]
-        elif np.array_equal(direction, [1, 1]):
-            neighbours = [1, 2, 3]
-        elif np.array_equal(direction, [0, 1]):
-            neighbours = [2, 3, 4]
-        elif np.array_equal(direction, [-1, 1]):
-            neighbours = [3, 4, 5]
-        elif np.array_equal(direction, [-1, 0]):
-            neighbours = [4, 5, 6]
-        elif np.array_equal(direction, [-1, -1]):
-            neighbours = [5, 6, 7]
-        elif np.array_equal(direction, [0, -1]):
-            neighbours = [6, 7, 0]
-        return neighbours
+        direction = list(direction)
+        match direction:
+            case [1, -1]:
+                return [7, 0, 1]
+            case [1, 0]:
+                return [0, 1, 2]
+            case [1, 1]:
+                return [1, 2, 3]
+            case [0, 1]:
+                return [2, 3, 4]
+            case [-1, 1]:
+                return [3, 4, 5]
+            case [-1, 0]:
+                return [4, 5, 6]
+            case [-1, -1]:
+                return [5, 6, 7]
+            case [0, -1]:
+                return [6, 7, 0]
+            case _:
+                return []
 
     def update_neighbours(self, grid: np.ndarray):
         """Updates neighbours list with all spot's neighbours."""

@@ -21,6 +21,6 @@ class WindApplicator(IApplicator):
 
             change = self.speed_modifier * cell.wind_speed * cell.oil_level * WindApplicator.factors[i]
             change_sum += change
-            neighbour.oil_level += change
+            neighbour.oil_change += change
 
         cell.oil_level -= change_sum

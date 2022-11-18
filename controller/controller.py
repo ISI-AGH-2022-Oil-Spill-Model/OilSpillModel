@@ -19,7 +19,7 @@ class Controller:
         self.bulk_applicator = BulkApplicator(applicators)
         map_init = MapInitializer(map_name)
         self.model = Model(map_init.get_image_size(), pixel_size)
-        window_size = tuple(self.model.cell_size * x for x in self.model.shape)
+        window_size = tuple(self.model.cell_size * x for x in reversed(self.model.shape))
         self.animator.initialize_animation(window_size, self.model)
 
         self.model.fill_cells(map_init)

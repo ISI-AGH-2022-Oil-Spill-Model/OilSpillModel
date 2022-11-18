@@ -9,8 +9,7 @@ class ImageLoader:
         if is_colorful:
             img = cv2.imread(path_to_image)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            img = np.transpose(img, (1, 0, 2))
         else:
             img = cv2.imread(path_to_image,cv2.IMREAD_GRAYSCALE)
-            img = np.transpose(img, (1, 0))
+        print(img.shape)
         return img

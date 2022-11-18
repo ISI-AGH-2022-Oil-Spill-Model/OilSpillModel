@@ -1,8 +1,9 @@
 class Color():
     """Colors palette of the programme."""
-    earth = (0,255,0)
-    water = (0,0,255)
-    oil = (0,0,0)
+    earth = (0, 255, 0)
+    water = (0, 0, 255)
+    water_visual = (20, 60, 255)
+    oil = (0, 0, 0)
     water_oil_margin = (0, 0, 240)
     water_oil_low = (0, 0, 210)
     water_oil_medium = (0, 0, 160)

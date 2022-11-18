@@ -14,6 +14,11 @@ class CellType(Enum):
     OIL_SOURCE = 2
 
 class Cell:
+    max_oil_with_color = 2000
+    oil_color_map = list((max(0, 15,- int(np.ceil(np.sqrt(oil) * 0.5))), 
+                           max(0, 50 - int(np.ceil(np.sqrt(oil) * 2))), 
+                           max(0, 230 - int(np.ceil(np.sqrt(oil) * 8)))) for oil in range(0, max_oil_with_color + 1))
+
     def __init__(self, type: CellType, cell_size: int, row: int, col: int) -> None:
         self.oil_level = 0
         self.oil_change = 0
@@ -30,7 +35,7 @@ class Cell:
 
     def _get_color_by_type(self) -> Color:
         if self.type == CellType.WATER:
-            return Color.water
+            return Color.water_visual
         if self.type == CellType.EARTH:
             return Color.earth
         if self.type == CellType.OIL_SOURCE:
@@ -47,7 +52,7 @@ class Cell:
     def update_color_by_oil_level(self):
         if self.type != CellType.WATER or self.oil_level < MIN_OIL_LEVEL:
             return
-        self.update_color((0, 0, max(0, 255 - int(np.ceil(self.oil_level * 2)))))
+        self.update_color(Cell.oil_color_map[min(Cell.max_oil_with_color, int(np.ceil(self.oil_level)))])
             
     def update_color(self, new_color: Color):
         self.visual.color = new_color 

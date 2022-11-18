@@ -25,7 +25,7 @@ class Cell:
         self.type = type
         self.row = row
         self.col = col
-        self.visual = Spot(row, col, cell_size)
+        self.visual = Spot(col, row, cell_size)
         self.neighbours = np.empty(8, dtype=np.dtype(object)) # NW, N, NE ,E, SE, S ,SW ,W  - can be None
         self.update_color(self._get_color_by_type())
         self.current_directions = []

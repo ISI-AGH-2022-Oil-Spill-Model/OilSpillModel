@@ -5,7 +5,7 @@ import numpy as np
 class WindSpeedScale:
     def __init__(self, vmin: float, vmax: float, image_loader: ImageLoader = ImageLoader()):
         self.scale = image_loader._get_image("images/scale.png", True)
-        self.scale = np.squeeze(self.scale, 0)
+        self.scale = np.squeeze(self.scale, 1)
         self.scale = np.unique(self.scale, axis=0)
         self.vmax = vmax
         self.vmin = vmin

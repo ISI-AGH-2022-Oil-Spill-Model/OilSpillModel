@@ -15,9 +15,13 @@ class CellType(Enum):
 
 class Cell:
     max_oil_with_color = 2000
-    oil_color_map = list((max(0, 20,- int(np.ceil(np.sqrt(oil) * 0.5))), 
-                           max(0, 50 - int(np.ceil(np.sqrt(oil) * 2))), 
-                           max(0, 190 - int(np.ceil(np.sqrt(oil) * 8)))) for oil in range(0, max_oil_with_color + 1))
+    # oil_color_map = list((max(0, 20,- int(np.ceil(np.sqrt(oil) * 0.5))), 
+    #                        max(0, 50 - int(np.ceil(np.sqrt(oil) * 2))), 
+    #                        max(0, 190 - int(np.ceil(np.sqrt(oil) * 8)))) for oil in range(0, max_oil_with_color + 1))
+
+    oil_color_map = list((max(0, 0,- int(np.ceil(np.sqrt(oil) * 0.5))), 
+                        max(0, 0 - int(np.ceil(np.sqrt(oil) * 2))), 
+                        max(0, 252 - int(np.ceil(np.sqrt(oil) * 16)))) for oil in range(0, max_oil_with_color + 1))
 
     def __init__(self, type: CellType, cell_size: int, row: int, col: int) -> None:
         self.oil_level = 0
@@ -52,8 +56,8 @@ class Cell:
     def update_color_by_oil_level(self):
         if self.type != CellType.WATER:
             return
-        if self.visual.color == Cell.oil_color_map[1] and self.oil_level < MIN_OIL_LEVEL:
-            self.update_color((25, 55, 195))
+        # if self.visual.color == Cell.oil_color_map[1] and self.oil_level < MIN_OIL_LEVEL:
+        #     self.update_color((25, 55, 195))
         if  self.oil_level < MIN_OIL_LEVEL:
             return
         self.update_color(Cell.oil_color_map[min(Cell.max_oil_with_color, int(np.ceil(self.oil_level)))])

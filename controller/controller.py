@@ -39,6 +39,7 @@ class Controller:
             self.model.apply_change()
             self.animator.update(self.model, fps)
 
+        input()
         self.animator.close_animation()
             
 

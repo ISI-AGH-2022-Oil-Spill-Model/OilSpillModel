@@ -10,7 +10,7 @@ class WaterCurrentApplicator(IApplicator):
     def __init__(self, speed_modifier):
         self.speed_modifier = speed_modifier
 
-    def apply(self, cell: Cell):
+    def apply(self, cell: Cell, model=None):
 
         change_sum = 0
 

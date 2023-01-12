@@ -14,5 +14,5 @@ class BulkApplicator:
                 if cell.type == CellType.EARTH or (cell.type == CellType.WATER and cell.oil_level <= MIN_OIL_LEVEL):
                     continue
                 for applicator in self.applicators:
-                    applicator.apply(cell)
+                    applicator.apply(cell, model)
 

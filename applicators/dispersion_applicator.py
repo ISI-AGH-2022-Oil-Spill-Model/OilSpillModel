@@ -9,7 +9,7 @@ class DispersionApplicator(IApplicator):
         self.D = dispersion_modifier
         self.d = diagonal_constant
 
-    def apply(self, cell: Cell):
+    def apply(self, cell: Cell, model=None):
         for i, neighbour in enumerate(cell.neighbours):
             if neighbour is None or neighbour.type == CellType.EARTH:
                 continue

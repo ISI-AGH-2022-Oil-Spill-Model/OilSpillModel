@@ -9,6 +9,6 @@ class VaporPhotoApplicator(IApplicator):
         self.V = vaporization_modifier
         self.P = photolysis_modifier
 
-    def apply(self, cell: Cell):
-
-        cell.oil_change -= max(MIN_OIL_LEVEL, cell.oil_level) * (self.V + self.P)
+    def apply(self, cell: Cell, model=None):
+        
+        cell.oil_change -= (MIN_OIL_LEVEL * 0.8 + cell.oil_level * 0.2) * (self.V + self.P)

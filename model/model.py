@@ -15,6 +15,7 @@ class Model:
         self.cells = np.empty(shape, dtype=np.dtype(object))
         self.__active_cells_border = np.array([shape[0], shape[1], 0, 0], dtype=int)
         self.__active_cells = None
+        self.oil_spilled = 0
 
     def active_cells(self):
         if self.__active_cells is None:

@@ -34,6 +34,7 @@ def main():
     controller.setup(get_applicators(), map_name, current_direction_image, 
                      current_speed_image, wind_direction_image, wind_speed_image, pixel_size)
     controller.run_simulation(iterations, fps)
+    input()
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ from enum import Enum
 import numpy as np
 
 from pygame import Surface
-from model.model_constants import MIN_OIL_LEVEL
+from model.model_constants import MIN_OIL_LEVEL, SIGNIFICANT_OIL_LEVEL
 from view.colors import Color
 
 from view.spot import Spot
@@ -36,6 +36,7 @@ class Cell:
         self.current_speed = 0
         self.wind_directions = []
         self.wind_speed = 0
+        self.was_significant = False
 
     def _get_color_by_type(self) -> Color:
         if self.type == CellType.WATER:
@@ -52,6 +53,7 @@ class Cell:
     def merge_change(self):
         self.oil_level += self.oil_change
         self.oil_change = 0
+        self.was_significant = self.was_significant if self.oil_level < SIGNIFICANT_OIL_LEVEL else True
 
     def update_color_by_oil_level(self):
         if self.type != CellType.WATER:

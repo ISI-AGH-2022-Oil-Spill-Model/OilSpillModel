@@ -1,5 +1,6 @@
 from applicators.bulk_applicator import BulkApplicator
 from applicators.i_applicator import IApplicator
+from controller.sum_up import SumUp
 from model.model import Model
 from view.animator import Animator
 from model.model import Model
@@ -14,6 +15,7 @@ class Controller:
         self.animator = animator
         self.model = model
         self.bulk_applicator = None
+        self.sum_up = SumUp()
 
     def setup(self, applicators: list[IApplicator], map_name, current_direction_image, current_speed_image, wind_direction_image, wind_speed_image, pixel_size):
         self.bulk_applicator = BulkApplicator(applicators)
@@ -32,14 +34,20 @@ class Controller:
         self.model.update_wind(wind_direction, wind_speed)
 
     def run_simulation(self, iterations: int, fps: int):
+        day = 0
         for i in range(iterations):
-            print("Iteration: ", i)
+            if i % (100 // 7) == 0:
+                print("Day", day)
+                day += 1
 
             self.bulk_applicator.bulk_apply(self.model)
             self.model.apply_change()
-            self.animator.update(self.model, fps)
+            if not self.animator.update(self.model, fps):
+                break
 
+        self.sum_up.print_statistics(self.model)
         input()
+        print("Closing...")
         self.animator.close_animation()
             
 

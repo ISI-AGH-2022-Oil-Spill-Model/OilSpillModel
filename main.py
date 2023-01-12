@@ -11,7 +11,7 @@ import os
 def get_applicators():
     leaks = OilLeakApplicator(780, 1000)
     dispersion = DispersionApplicator(0.1, 0.7)
-    water_current = WaterCurrentApplicator(0.6)
+    water_current = WaterCurrentApplicator(0.8)
     wind = WindApplicator(0.05)
     vapor_photo = VaporPhotoApplicator(0.001, 0.001)
     return [leaks, water_current, wind, dispersion, vapor_photo]
